@@ -12,7 +12,18 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-// Get a reference to the container element that will hold our scene
+function resizer(container, camera, renderer) {
+  camera.aspect = container.clientWidth / container.clientHeight; // update the camera's frustum
+
+  camera.updateProjectionMatrix(); // update the size of the renderer AND the canvas
+
+  renderer.setSize(container.clientWidth, container.clientHeight); // set the pixel ratio (for mobile devices)
+
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.render(scene, camera);
+} // Get a reference to the container element that will hold our scene
+
+
 var container = document.querySelector('#scene-container'); // create game loop
 // Initialise
 
@@ -28,8 +39,8 @@ var near = 0.1; // the near clipping plane
 var far = 1000; // the far clipping plane
 
 var camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-camera.position.set(0, 0, 900);
-var light = new THREE.DirectionalLight('white', 8);
+camera.position.set(0, 0, 950);
+var light = new THREE.DirectionalLight('red', 20);
 light.position.set(10, 10, 10); // create the renderer
 
 var renderer = new THREE.WebGLRenderer(); // next, set the renderer to the same size as our container element
@@ -40,12 +51,12 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.physicallyCorrectLights = true; // create cube 
 
 function cube() {
-  var geometry = new THREE.BoxGeometry();
+  var geometry = new THREE.BoxBufferGeometry(700, 700, 700);
   var material = new THREE.MeshStandardMaterial({
     color: 0x00ff00
   });
-  var cube = new THREE.Mesh(geometry, material);
-  cube.rotation.set(-0.5, -0.1, 0.8);
+  var cube = new THREE.Mesh(geometry, material); // cube.rotation.set(-0.5, -0.1, 0.8);
+
   return cube;
 } // scene.add(cube(), light);
 
@@ -58,8 +69,9 @@ var loader = new _GLTFLoader.GLTFLoader();
 var loadedData = loader.load('Moon_1_3474.glb', function (data) {
   console.log("big deal", data);
   var model = data.scene.children[0];
-  console.log('model', model); // model.position.set(0, 0, 90); 
-  // model.scale.set(2, 2, 2);                                 
+  console.log('model', model); // model.position.set(30, 0, 0); 
+
+  model.material.opacity = 0; // scene.add(cube(), light);                       
 
   scene.add(model, light);
   renderer.render(scene, camera);
@@ -68,3 +80,9 @@ var loadedData = loader.load('Moon_1_3474.glb', function (data) {
 container.append(renderer.domElement); // render, or 'create a still image', of the scene
 
 renderer.render(scene, camera);
+
+function reportWindowSize() {
+  resizer(container, camera, renderer);
+}
+
+window.onresize = reportWindowSize();
