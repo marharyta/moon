@@ -67,9 +67,33 @@ function cube (){
 
 // create a ight sky
 
-scene.fog = new THREE.FogExp2( 0x8CB4D3, 0.0004 );
+const scene2 = new THREE.Scene();
 
-// scene.add(cube(), light);
+scene2.fog = new THREE.Fog( 0x8CB4D3, 0.0001 );
+var geometry = new THREE.Geometry();
+
+THREE.ImageUtils.crossOrigin = 'anonymous';
+var sprite = new THREE.TextureLoader().load('./star1.png');
+
+for (var i = 0; i < 1000; i++) {
+    var vertex = new THREE.Vector3();
+    vertex.x = 2000 * Math.random() - 1000;
+    vertex.y = 2000 * Math.random() - 1000;
+    vertex.z = 2000 * Math.random() - 1000;
+
+    geometry.vertices.push( vertex );
+}
+
+var material = new THREE.PointsMaterial( {  size: 13, map: sprite, transparent:true
+} );
+
+var particles = new THREE.Points( geometry, material );
+
+console.log("particles", particles);
+scene2.position.z = 700;
+scene2.add( particles );
+console.log("scene2", scene2);
+scene.add(scene2);
 
 // SUPER SIMPLE GLOW EFFECT
 // use sprite because it appears the same from all angles
@@ -94,10 +118,10 @@ const loadedData = loader.load('Moon_1_3474.glb',
                                  (data) =>{
                                     const model = data.scene.children[0];
 
-                                    function animate( ){
+                                    function animate(){
                                         requestAnimationFrame(animate);
-                                        console.log("model", model);
-                                        model.rotation.y +=  0.001;
+
+                                        model.rotation.y +=  0.0005;
                                         light.position.x += 0.1;
                                         light.position.y += 0.1;
 
@@ -107,9 +131,10 @@ const loadedData = loader.load('Moon_1_3474.glb',
                                         renderer.render(scene, camera);
                                       }
 
-                                    scene.add(ambientLight);                  
-                                     scene.add(model, light);
-                                     // scene.add(light2);
+                                     scene.add(ambientLight);                  
+                                     scene.add(model);
+                                     scene.add(light);
+                                     scene.add(light2);
                                      scene.add(ambientLight2);
                                      console.log("big deal", model);
                                      animate(model); 
