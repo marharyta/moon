@@ -40,6 +40,11 @@ const light2 = new THREE.DirectionalLight('blue', 28);
 light2.position.set(100, 100, 100);
 
 const ambientLight = new THREE.AmbientLight('white', 12);
+const ambientLight2 = new THREE.HemisphereLight(
+    'white', // bright sky color
+    'darkslategrey', // dim ground color
+    5, // intensity
+  );
 
 
 // create the renderer
@@ -58,6 +63,11 @@ function cube (){
     // cube.rotation.set(-0.5, -0.1, 0.8);
     return cube;
 }
+
+
+// create a ight sky
+
+scene.fog = new THREE.FogExp2( 0x8CB4D3, 0.0004 );
 
 // scene.add(cube(), light);
 
@@ -87,13 +97,20 @@ const loadedData = loader.load('Moon_1_3474.glb',
                                     function animate( ){
                                         requestAnimationFrame(animate);
                                         console.log("model", model);
-                                        model.rotation.y +=  0.01;
+                                        model.rotation.y +=  0.001;
+                                        light.position.x += 0.1;
+                                        light.position.y += 0.1;
+
+                                        light2.position.x -= 0.1;
+                                        light2.position.y -= 0.1;
+
                                         renderer.render(scene, camera);
                                       }
 
                                     scene.add(ambientLight);                  
                                      scene.add(model, light);
-                                     scene.add(light2);
+                                     // scene.add(light2);
+                                     scene.add(ambientLight2);
                                      console.log("big deal", model);
                                      animate(model); 
                                     

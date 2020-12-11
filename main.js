@@ -44,7 +44,10 @@ var light = new THREE.DirectionalLight('red', 18);
 light.position.set(-100, -100, 100);
 var light2 = new THREE.DirectionalLight('blue', 28);
 light2.position.set(100, 100, 100);
-var ambientLight = new THREE.AmbientLight('white', 12); // create the renderer
+var ambientLight = new THREE.AmbientLight('white', 12);
+var ambientLight2 = new THREE.HemisphereLight('white', // bright sky color
+'darkslategrey', // dim ground color
+5); // create the renderer
 
 var renderer = new THREE.WebGLRenderer({
   antialias: true
@@ -63,7 +66,10 @@ function cube() {
   var cube = new THREE.Mesh(geometry, material); // cube.rotation.set(-0.5, -0.1, 0.8);
 
   return cube;
-} // scene.add(cube(), light);
+} // create a ight sky
+
+
+scene.fog = new THREE.FogExp2(0x8CB4D3, 0.0004); // scene.add(cube(), light);
 // SUPER SIMPLE GLOW EFFECT
 // use sprite because it appears the same from all angles
 // const spriteMaterial = new THREE.SpriteMaterial( 
@@ -78,7 +84,6 @@ function cube() {
 //     var sprite = new THREE.Sprite( spriteMaterial );
 //     sprite.scale.set(200, 200, 1.0);
 
-
 var controls = new _OrbitControls.OrbitControls(camera, renderer.domElement);
 controls.addEventListener('change', function () {
   return renderer.render(scene, camera);
@@ -90,13 +95,18 @@ var loadedData = loader.load('Moon_1_3474.glb', function (data) {
   function animate() {
     requestAnimationFrame(animate);
     console.log("model", model);
-    model.rotation.y += 0.01;
+    model.rotation.y += 0.001;
+    light.position.x += 0.1;
+    light.position.y += 0.1;
+    light2.position.x -= 0.1;
+    light2.position.y -= 0.1;
     renderer.render(scene, camera);
   }
 
   scene.add(ambientLight);
-  scene.add(model, light);
-  scene.add(light2);
+  scene.add(model, light); // scene.add(light2);
+
+  scene.add(ambientLight2);
   console.log("big deal", model);
   animate(model);
   renderer.render(scene, camera);
