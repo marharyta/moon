@@ -86,30 +86,40 @@ controls.addEventListener('change', function () {
 var loader = new _GLTFLoader.GLTFLoader();
 var loadedData = loader.load('Moon_1_3474.glb', function (data) {
   console.log("big deal", data);
-  var model = data.scene.children[0];
-  console.log('model', model); // model.position.set(30, 0, 0); 
-
-  model.material.opacity = 0;
-  model.scale.set(0.5, 0.5, 0.5); // model.add(sprite); // this centers the glow at the mesh
+  var model = data.scene.children[0]; // console.log('model', model.rotation.updateProjectionMatrix)
+  // model.position.set(30, 0, 0); 
+  //  model.material.opacity = 0;  
+  //  model.scale.set(0.5, 0.5, 0.5);
+  // model.add(sprite); // this centers the glow at the mesh
   // scene.add(cube(), light); 
   //  updateFcts.push(function(delta, now) {
   //     // cloudMesh.rotation.y += 1 / 8 * delta;
   //     model.rotation.y += 1 / 16 * delta;
-  //   })    
+  //   })  
+  // ;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    console.log("model", model); // model.rotation.x +=  0.1;
+
+    model.rotation.y += 0.1;
+    renderer.render(scene, camera);
+  }
 
   scene.add(ambientLight);
   scene.add(model, light);
   scene.add(light2);
+  console.log("big deal", model);
+  animate(model);
   renderer.render(scene, camera);
 }); // add the automatically created <canvas> element to the page
 
 container.append(renderer.domElement); // render, or 'create a still image', of the scene
 
-renderer.render(scene, camera); // start the loop
-
-renderer.setAnimationLoop(function () {
-  renderer.render(scene, camera);
-});
+renderer.render(scene, camera); // // start the loop
+// renderer.setAnimationLoop(() => {
+//     renderer.render(scene, camera);
+//   });
 
 function reportWindowSize() {
   resizer(container, camera, renderer);
