@@ -39,7 +39,7 @@ light.position.set(-100, -100, 100);
 const light2 = new THREE.DirectionalLight('blue', 28);
 light2.position.set(100, 100, 100);
 
-const ambientLight = new THREE.AmbientLight('white', 18);
+const ambientLight = new THREE.AmbientLight('white', 12);
 
 
 // create the renderer
@@ -76,36 +76,18 @@ function cube (){
 //     sprite.scale.set(200, 200, 1.0);
 
 
-
-
-    
-
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.addEventListener('change', () => renderer.render(scene, camera));
 
 const loader = new GLTFLoader();
 const loadedData = loader.load('Moon_1_3474.glb', 
                                  (data) =>{
-                                     console.log("big deal", data); 
-                                     const model = data.scene.children[0];
-
-                                     // console.log('model', model.rotation.updateProjectionMatrix)
-                                     // model.position.set(30, 0, 0); 
-                                    //  model.material.opacity = 0;  
-                                    //  model.scale.set(0.5, 0.5, 0.5);
-                                     // model.add(sprite); // this centers the glow at the mesh
-                                     // scene.add(cube(), light); 
-                                    //  updateFcts.push(function(delta, now) {
-                                    //     // cloudMesh.rotation.y += 1 / 8 * delta;
-                                    //     model.rotation.y += 1 / 16 * delta;
-                                    //   })  
-                                    // ;
+                                    const model = data.scene.children[0];
 
                                     function animate( ){
                                         requestAnimationFrame(animate);
-                                        console.log("model", model)
-                                        // model.rotation.x +=  0.1;
-                                        model.rotation.y +=  0.1;
+                                        console.log("model", model);
+                                        model.rotation.y +=  0.01;
                                         renderer.render(scene, camera);
                                       }
 

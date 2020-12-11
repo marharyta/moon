@@ -44,7 +44,7 @@ var light = new THREE.DirectionalLight('red', 18);
 light.position.set(-100, -100, 100);
 var light2 = new THREE.DirectionalLight('blue', 28);
 light2.position.set(100, 100, 100);
-var ambientLight = new THREE.AmbientLight('white', 18); // create the renderer
+var ambientLight = new THREE.AmbientLight('white', 12); // create the renderer
 
 var renderer = new THREE.WebGLRenderer({
   antialias: true
@@ -85,24 +85,12 @@ controls.addEventListener('change', function () {
 });
 var loader = new _GLTFLoader.GLTFLoader();
 var loadedData = loader.load('Moon_1_3474.glb', function (data) {
-  console.log("big deal", data);
-  var model = data.scene.children[0]; // console.log('model', model.rotation.updateProjectionMatrix)
-  // model.position.set(30, 0, 0); 
-  //  model.material.opacity = 0;  
-  //  model.scale.set(0.5, 0.5, 0.5);
-  // model.add(sprite); // this centers the glow at the mesh
-  // scene.add(cube(), light); 
-  //  updateFcts.push(function(delta, now) {
-  //     // cloudMesh.rotation.y += 1 / 8 * delta;
-  //     model.rotation.y += 1 / 16 * delta;
-  //   })  
-  // ;
+  var model = data.scene.children[0];
 
   function animate() {
     requestAnimationFrame(animate);
-    console.log("model", model); // model.rotation.x +=  0.1;
-
-    model.rotation.y += 0.1;
+    console.log("model", model);
+    model.rotation.y += 0.01;
     renderer.render(scene, camera);
   }
 
