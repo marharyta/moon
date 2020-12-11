@@ -27,8 +27,8 @@ function resizer(container, camera, renderer) {
 var container = document.querySelector('#scene-container'); // create game loop
 // Initialise
 
-var scene = new THREE.Scene();
-scene.background = new THREE.Color('#0e1545'); // Create a camera
+var scene = new THREE.Scene(); // scene.background = new THREE.Color('#0e1545');
+// Create a camera
 
 var fov = 90; // AKA Field of View
 // const fov = 180 * ( 2 * Math.atan( window.innerHeight / 2 / perspective ) ) / Math.PI
@@ -45,12 +45,13 @@ light.position.set(-100, -100, 100);
 var light2 = new THREE.DirectionalLight('blue', 28);
 light2.position.set(100, 100, 100);
 var ambientLight = new THREE.AmbientLight('white', 12);
-var ambientLight2 = new THREE.HemisphereLight('white', // bright sky color
-'darkslategrey', // dim ground color
-5); // create the renderer
+var ambientLight2 = new THREE.HemisphereLight('pink', // bright sky color
+'red', // dim ground color
+100); // create the renderer
 
 var renderer = new THREE.WebGLRenderer({
-  antialias: true
+  antialias: true,
+  alpha: true
 }); // next, set the renderer to the same size as our container element
 
 renderer.setSize(container.clientWidth, container.clientHeight); // finally, set the pixel ratio so that our scene will look good on HiDPI displays
@@ -70,7 +71,7 @@ function cube() {
 
 
 var scene2 = new THREE.Scene();
-scene2.fog = new THREE.Fog(0x8CB4D3, 0.0001);
+scene2.fog = new THREE.FogExp2(0x8CB4D3, 0.0004);
 var geometry = new THREE.Geometry();
 THREE.ImageUtils.crossOrigin = 'anonymous';
 var sprite = new THREE.TextureLoader().load('./star1.png');
@@ -89,10 +90,33 @@ var material = new THREE.PointsMaterial({
   transparent: true
 });
 var particles = new THREE.Points(geometry, material);
+var geometry2 = new THREE.Geometry();
+var sprite2 = new THREE.TextureLoader().load("./cloud10.png");
+
+for (i = 0; i < 900; i++) {
+  var vertex2 = new THREE.Vector3();
+  vertex2.x = Math.random() * 4000 - 500;
+  vertex2.y = -Math.random() * Math.random() * 400 - 15;
+  vertex2.z = i;
+  geometry2.vertices.push(vertex2);
+}
+
+var material2 = new THREE.PointsMaterial({
+  size: 400,
+  map: sprite2,
+  depthWrite: false,
+  depthTest: false,
+  transparent: true,
+  opacity: .2
+});
+var particles2 = new THREE.Points(geometry2, material2);
+particles2.position.set(-800, -270, 0);
+scene2.add(particles2);
 console.log("particles", particles);
-scene2.position.z = 700;
+scene2.position.z = -700;
 scene2.add(particles);
 console.log("scene2", scene2);
+scene2.add(ambientLight2);
 scene.add(scene2); // SUPER SIMPLE GLOW EFFECT
 // use sprite because it appears the same from all angles
 // const spriteMaterial = new THREE.SpriteMaterial( 
@@ -129,7 +153,6 @@ var loadedData = loader.load('Moon_1_3474.glb', function (data) {
   scene.add(model);
   scene.add(light);
   scene.add(light2);
-  scene.add(ambientLight2);
   console.log("big deal", model);
   animate(model);
   renderer.render(scene, camera);
