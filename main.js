@@ -70,8 +70,8 @@ function cube() {
 } // create a ight sky
 
 
-var scene2 = new THREE.Scene();
-scene2.fog = new THREE.FogExp2(0x8CB4D3, 0.0004);
+var scene2 = new THREE.Scene(); // scene2.fog = new THREE.FogExp2( 0x8CB4D3, 0.0004 );
+
 var geometry = new THREE.Geometry();
 THREE.ImageUtils.crossOrigin = 'anonymous';
 var sprite = new THREE.TextureLoader().load('./star1.png');
@@ -115,8 +115,8 @@ scene2.add(particles2);
 console.log("particles", particles);
 scene2.position.z = -700;
 scene2.add(particles);
-console.log("scene2", scene2);
-scene2.add(ambientLight2);
+console.log("scene2", scene2); // scene2.add(ambientLight2);
+
 scene.add(scene2); // SUPER SIMPLE GLOW EFFECT
 // use sprite because it appears the same from all angles
 // const spriteMaterial = new THREE.SpriteMaterial( 

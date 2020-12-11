@@ -69,7 +69,7 @@ function cube (){
 
 const scene2 = new THREE.Scene();
 
-scene2.fog = new THREE.FogExp2( 0x8CB4D3, 0.0004 );
+// scene2.fog = new THREE.FogExp2( 0x8CB4D3, 0.0004 );
 var geometry = new THREE.Geometry();
 
 THREE.ImageUtils.crossOrigin = 'anonymous';
@@ -99,11 +99,9 @@ var geometry2 = new THREE.Geometry();
                 vertex2.x = Math.random() * 4000 - 500;
                 vertex2.y = - Math.random() * Math.random() * 400 - 15;
                 vertex2.z = i;
-            
-        
+
                 geometry2.vertices.push( vertex2 );
-        
-        
+
             }
 
             var material2 = new THREE.PointsMaterial( {  size: 400, map: sprite2, 	depthWrite: false,
@@ -120,7 +118,7 @@ console.log("particles", particles);
 scene2.position.z = -700;
 scene2.add( particles);
 console.log("scene2", scene2);
-scene2.add(ambientLight2);
+// scene2.add(ambientLight2);
 scene.add(scene2);
 
 // SUPER SIMPLE GLOW EFFECT
