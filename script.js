@@ -6,8 +6,6 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 function resizer (container, camera, renderer){
     camera.aspect = container.clientWidth / container.clientHeight;
 
-
-
     // update the camera's frustum
     camera.updateProjectionMatrix();
     // update the size of the renderer AND the canvas
@@ -24,7 +22,7 @@ const container = document.querySelector('#scene-container');
 // create game loop
 // Initialise
 const scene = new THREE.Scene();
-scene.background = new THREE.Color('skyblue');
+scene.background = new THREE.Color('#0e1545');
 
 // Create a camera
 const fov = 90; // AKA Field of View
@@ -35,11 +33,14 @@ const far = 1000; // the far clipping plane
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 camera.position.set(0, 0, 950);
 
-const light = new THREE.DirectionalLight('red', 20);
-light.position.set(10, 10, 10);
+const light = new THREE.DirectionalLight('red', 18);
+light.position.set(-100, -100, 100);
+
+const light2 = new THREE.DirectionalLight('blue', 28);
+light2.position.set(100, 100, 100);
 
 // create the renderer
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 // next, set the renderer to the same size as our container element
 renderer.setSize(container.clientWidth, container.clientHeight);
 // finally, set the pixel ratio so that our scene will look good on HiDPI displays
@@ -57,6 +58,21 @@ function cube (){
 
 // scene.add(cube(), light);
 
+// SUPER SIMPLE GLOW EFFECT
+// use sprite because it appears the same from all angles
+// const spriteMaterial = new THREE.SpriteMaterial( 
+//     { 
+//       map: new THREE.ImageUtils.loadTexture( 'images/glow.png' ), 
+//       useScreenCoordinates: false, 
+//       alignment: THREE.SpriteAlignment.center,
+//       color: 0x0000ff, 
+//       transparent: false, 
+//       blending: THREE.AdditiveBlending
+//     });
+//     var sprite = new THREE.Sprite( spriteMaterial );
+//     sprite.scale.set(200, 200, 1.0);
+    
+
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.addEventListener('change', () => renderer.render(scene, camera));
 
@@ -68,8 +84,15 @@ const loadedData = loader.load('Moon_1_3474.glb',
                                      console.log('model', model)
                                      // model.position.set(30, 0, 0); 
                                      model.material.opacity = 0;  
-                                     // scene.add(cube(), light);                       
+                                     model.scale.set(0.5, 0.5, 0.5);
+                                     // model.add(sprite); // this centers the glow at the mesh
+                                     // scene.add(cube(), light); 
+                                    //  updateFcts.push(function(delta, now) {
+                                    //     // cloudMesh.rotation.y += 1 / 8 * delta;
+                                    //     model.rotation.y += 1 / 16 * delta;
+                                    //   })                      
                                      scene.add(model, light);
+                                     scene.add(light2)
                                      renderer.render(scene, camera);                                 
                                  });
 
@@ -78,6 +101,11 @@ container.append(renderer.domElement);
 
 // render, or 'create a still image', of the scene
 renderer.render(scene, camera);
+
+// start the loop
+renderer.setAnimationLoop(() => {
+    renderer.render(scene, camera);
+  });
 
 function reportWindowSize() {
     resizer(container, camera, renderer);
