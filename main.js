@@ -43,7 +43,8 @@ camera.position.set(0, 0, 950);
 var light = new THREE.DirectionalLight('red', 18);
 light.position.set(-100, -100, 100);
 var light2 = new THREE.DirectionalLight('blue', 28);
-light2.position.set(100, 100, 100); // create the renderer
+light2.position.set(100, 100, 100);
+var ambientLight = new THREE.AmbientLight('white', 18); // create the renderer
 
 var renderer = new THREE.WebGLRenderer({
   antialias: true
@@ -94,8 +95,9 @@ var loadedData = loader.load('Moon_1_3474.glb', function (data) {
   //  updateFcts.push(function(delta, now) {
   //     // cloudMesh.rotation.y += 1 / 8 * delta;
   //     model.rotation.y += 1 / 16 * delta;
-  //   })                      
+  //   })    
 
+  scene.add(ambientLight);
   scene.add(model, light);
   scene.add(light2);
   renderer.render(scene, camera);

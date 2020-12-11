@@ -39,6 +39,9 @@ light.position.set(-100, -100, 100);
 const light2 = new THREE.DirectionalLight('blue', 28);
 light2.position.set(100, 100, 100);
 
+const ambientLight = new THREE.AmbientLight('white', 18);
+
+
 // create the renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 // next, set the renderer to the same size as our container element
@@ -90,7 +93,8 @@ const loadedData = loader.load('Moon_1_3474.glb',
                                     //  updateFcts.push(function(delta, now) {
                                     //     // cloudMesh.rotation.y += 1 / 8 * delta;
                                     //     model.rotation.y += 1 / 16 * delta;
-                                    //   })                      
+                                    //   })    
+                                    scene.add(ambientLight);                  
                                      scene.add(model, light);
                                      scene.add(light2)
                                      renderer.render(scene, camera);                                 
